@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    git branch: 'main', url: 'https://github.com/usaydatheri200907/mlops_3.git'
+                }
+            }
+        }
+        
+        stage('Set up Python') {
+            steps {
+                script {
+                    // Install Python
+                    sh 'apt-get update && apt-get install -y python3'
+                    sh 'python3 --version' // Check Python version
+                }
+            }
+        }
+        
+        stage('Install dependencies') {
+            steps {
+                script {
+                    sh 'make install'
+                }
+            }
+        }
+        
+        stage('Run tests') {
+            steps {
+                script {
+                    sh 'make test'
+                }
+            }
+        }
+    }
+}
